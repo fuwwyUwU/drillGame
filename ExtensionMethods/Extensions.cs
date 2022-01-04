@@ -9,10 +9,11 @@ namespace drillGame
     public static class Extensions
     {
         //turns out, static classes cant have extension methods :(
-        public static void ToInt(this Vector2 vector)
+        public static Vector2 ToInt(this Vector2 vector)
         {
             vector.X = (int)vector.X;
             vector.Y = (int)vector.Y;
+            return vector;
         }
     }
 }
