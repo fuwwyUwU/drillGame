@@ -14,10 +14,10 @@ namespace TerrainGeneration
     {
         List<Tile> tiles = new List<Tile>();
         private int seed;
-        private int width, height;
+       // private int width, height;
         Texture2D grassTile, sandTile, waterTile;
 
-        public void Generate()
+        public void Generate(int width, int height)
         {
             tiles = new List<Tile>();
             seed = GenerateSeed();
