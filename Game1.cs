@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using nekoT;
 using TerrainGeneration;
+using System.Diagnostics;
 
 namespace drillGame
 {
@@ -37,6 +38,7 @@ namespace drillGame
             sandTile = Content.Load<Texture2D>("sand");
             waterTile = Content.Load<Texture2D>("water");
             terrain = new TerrainGenerator(100, 100, grassTile, sandTile, waterTile);
+            terrain.Generate();
         }
 
         protected override void Update(GameTime gameTime)
@@ -54,7 +56,6 @@ namespace drillGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin();
-            // TODO: Add your drawing code here
             terrain.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);

@@ -7,6 +7,7 @@ using drillGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SimplexNoise;
+using System.Diagnostics;
 
 
 namespace TerrainGeneration
@@ -17,11 +18,15 @@ namespace TerrainGeneration
         private int width, height;
         Texture2D grassTile, sandTile, waterTile;
 
+        
+
         public void Generate()
         {
             tiles = new List<Tile>();
             Noise.Seed = GenerateSeed();
-            float[,] values = Noise.Calc2D(width, height, 1);
+            float[,] values = Noise.Calc2D(width, height, .001f);
+
+
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
@@ -61,7 +66,7 @@ namespace TerrainGeneration
         {
             foreach(var tile in tiles)
             {
-                spriteBatch.Draw(tile.sprite, tile.position * Tile.size, Color.White);
+                spriteBatch.Draw(tile.sprite, tile.position, Color.White);
             }
         }
 
