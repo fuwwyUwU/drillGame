@@ -8,8 +8,7 @@ namespace drillGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
-
+        private Texture2D box; //used as a temp sprite
 
         public Game1()
         {
@@ -29,7 +28,7 @@ namespace drillGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            box = Content.Load<Texture2D>("box");
         }
 
         protected override void Update(GameTime gameTime)
@@ -46,8 +45,10 @@ namespace drillGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            _spriteBatch.Begin();
             // TODO: Add your drawing code here
-
+            _spriteBatch.Draw(box, Mouse.GetState().Position.ToVector2(), Color.DarkOrange);
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
