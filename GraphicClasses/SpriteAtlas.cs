@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace nekoT
 {
-    public class SpriteAtlas// : ICloneable
+    public class SpriteAtlas : ICloneable
     {
         public Texture2D Texture { get; set; }
         public SpriteAtlas parent;
@@ -40,7 +40,7 @@ namespace nekoT
             tex.SetData(data);
             return tex;
         }*/ // currently implemented in class, UPD: Hey i removed it due many devs says Slice is messy asf so will use 
-//what they recommend ;)
+            //what they recommend ;)
         public void Draw(SpriteBatch spritebatch)
         {
             spritebatch.Draw(Texture,
