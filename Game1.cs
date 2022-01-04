@@ -9,7 +9,7 @@ namespace drillGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D box; //used as a temp sprite
-
+        
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
