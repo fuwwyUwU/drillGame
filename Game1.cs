@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using nekoT;
+using TerrainGeneration;
 
 namespace drillGame
 {
@@ -10,7 +11,8 @@ namespace drillGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D box; //used as a temp sprite
-        private SpriteAtlas atlas;
+        Texture2D grassTile, sandTile, waterTile;
+        TerrainGenerator terrain;
         
         public Game1()
         {
@@ -31,6 +33,10 @@ namespace drillGame
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             box = Content.Load<Texture2D>("box");
+            grassTile = Content.Load<Texture2D>("grass");
+            sandTile = Content.Load<Texture2D>("sand");
+            waterTile = Content.Load<Texture2D>("water");
+            terrain = new TerrainGenerator(100, 100, grassTile, sandTile, waterTile);
         }
 
         protected override void Update(GameTime gameTime)
@@ -49,7 +55,7 @@ namespace drillGame
 
             _spriteBatch.Begin();
             // TODO: Add your drawing code here
-            _spriteBatch.Draw(box, Mouse.GetState().Position.ToVector2(), Color.DarkOrange);
+            terrain.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
         }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using drillGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SimplexNoise;
 
 
 namespace TerrainGeneration
@@ -13,24 +14,24 @@ namespace TerrainGeneration
     public class TerrainGenerator
     {
         List<Tile> tiles = new List<Tile>();
-        private int seed;
         private int width, height;
         Texture2D grassTile, sandTile, waterTile;
 
         public void Generate()
         {
             tiles = new List<Tile>();
-            seed = GenerateSeed();
+            Noise.Seed = GenerateSeed();
+            float[,] values = Noise.Calc2D(width, height, 1);
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    float value = 1; //Noise.Generate((x / width) * seed, (y / height) * seed) / 10.0f;
-                    if (value <= 0.1f)
+                    
+                    if (values[x, y] <= 0.1f)
                     {
                         tiles.Add(new Tile(new Vector2(x * y).ToInt() * Tile.size, grassTile));
                     }
-                    else if (value > 0.1f && value <= 0.5f)
+                    else if (values[x, y] > 0.1f && values[x, y] <= 0.5f)
                     {
                         tiles.Add(new Tile(new Vector2(x * y).ToInt() * Tile.size, sandTile));
                     }
@@ -42,7 +43,7 @@ namespace TerrainGeneration
             }
         }
 
-        public int GenerateSeed()
+        private int GenerateSeed()
         {
             Random random = new Random();
             int length = 8;
@@ -54,6 +55,24 @@ namespace TerrainGeneration
             }
 
             return result;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach(var tile in tiles)
+            {
+                spriteBatch.Draw(tile.sprite, tile.position * Tile.size, Color.White);
+            }
+        }
+
+
+        public TerrainGenerator(int _width, int _height, Texture2D _grassTile, Texture2D _sandTile, Texture2D _waterTile)
+        {
+            width = _width;
+            height = _height;
+            grassTile = _grassTile;
+            sandTile = _sandTile;
+            waterTile = _waterTile;
         }
     }
 }
