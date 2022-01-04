@@ -6,37 +6,37 @@ using System.Threading.Tasks;
 using drillGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using SimplexNoise;
 
 namespace TerrainGeneration
 {
     public class TerrainGenerator
     {
-        List<Tile> tiles = new List<Tile>();
-        private int seed;
+        public List<Tile> tiles = new List<Tile>();
+        public int seed;
        // private int width, height;
-        Texture2D grassTile, sandTile, waterTile;
+        public Texture2D grassTile, sandTile, waterTile;
 
         public void Generate(int width, int height)
         {
             tiles = new List<Tile>();
             seed = GenerateSeed();
-            for (int x = 0; x < width; x++)
+            for (float x = 0; x < width; x++)
             {
-                for (int y = 0; y < height; y++)
+                for (float y = 0; y < height; y++)
                 {
-                    float value = 1; //Noise.Generate((x / width) * seed, (y / height) * seed) / 10.0f;
-                    if (value <= 0.1f)
+                    float value = (Noise.Generate((x / width) * seed, (y / height) * seed) + 1);
+                    if (value <= 0.2f)
                     {
-                        tiles.Add(new Tile(new Vector2(x * y).ToInt() * Tile.size, grassTile));
+                        tiles.Add(new Tile(new Vector2(x,y), grassTile));
                     }
-                    else if (value > 0.1f && value <= 0.5f)
-                    {
-                        tiles.Add(new Tile(new Vector2(x * y).ToInt() * Tile.size, sandTile));
+                    else if (value > 0.2f && value <= 1f)
+                        {
+                        tiles.Add(new Tile(new Vector2(x, y), sandTile));
                     }
                     else
                     {
-                        tiles.Add(new Tile(new Vector2(x * y).ToInt() * Tile.size, waterTile));
+                        tiles.Add(new Tile(new Vector2(x, y), waterTile));
                     }
                 }
             }
@@ -45,12 +45,12 @@ namespace TerrainGeneration
         public int GenerateSeed()
         {
             Random random = new Random();
-            int length = 8;
+            int length = 20;
             int result = 0;
 
             for (int i = 0; i < length; i++)
             {
-                result += random.Next(0, 9);
+                result += random.Next(0, length+1);
             }
 
             return result;

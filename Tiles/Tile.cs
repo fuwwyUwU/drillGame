@@ -17,7 +17,8 @@ namespace drillGame
 
         public Tile(Vector2 _position, Texture2D _sprite)
         {
-            position = _position;
+            position.X = _position.X * _sprite.Width;
+            position.Y = _position.Y * _sprite.Height;
             sprite = _sprite;
         }
     }

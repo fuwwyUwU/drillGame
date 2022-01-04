@@ -10,26 +10,31 @@ namespace drillGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D box; //used as a temp sprite
-        private SpriteAtlas atlas;
+        TerrainGeneration.TerrainGenerator gen;
         
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            Window.AllowUserResizing = true;
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            gen = new();
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            gen.grassTile = Content.Load<Texture2D>("box");
+            gen.sandTile = Content.Load<Texture2D>("sandtile");
+            gen.waterTile = Content.Load<Texture2D>("watertile");
+            gen.Generate(24, 24);
+            Window.Title = gen.seed.ToString();
             box = Content.Load<Texture2D>("box");
         }
 
@@ -49,6 +54,10 @@ namespace drillGame
 
             _spriteBatch.Begin();
             // TODO: Add your drawing code here
+            foreach(var tile in gen.tiles)
+            {
+                _spriteBatch.Draw(tile.sprite, tile.position, Color.White);
+            }
             _spriteBatch.Draw(box, Mouse.GetState().Position.ToVector2(), Color.DarkOrange);
             _spriteBatch.End();
             base.Draw(gameTime);
