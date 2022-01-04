@@ -5,7 +5,8 @@ using System.Collections.Generic;
 
 namespace nekoT
 {
-    public class SpriteAtlas : ICloneable
+
+    public class SpriteAtlas
     {
         public Texture2D Texture { get; set; }
         public SpriteAtlas parent;
@@ -16,13 +17,16 @@ namespace nekoT
         public float Rotation { get; set; }
         public int CurrentFrame { set; get; }
         //public int TotalFrames { get; set; }
-        public int Width,Height = 1;
+        public int Width, Height = 1;
+        private int width, height = 1;
+        private int _columns;
         public SpriteEffects Effect;
         public SpriteAtlas(Texture2D spritesheet, int rows, int columns, int frame)
         {
             Texture = spritesheet;
-            int width = spritesheet.Width / columns;
-            int height = spritesheet.Height / rows;
+            _columns = columns;
+            width = spritesheet.Width / _columns;
+            height = spritesheet.Height / rows;
             //_columns = columns;
             CurrentFrame = frame;
             Origin = new(width * 0.5f, height * 0.5f);
@@ -45,7 +49,7 @@ namespace nekoT
         {
             spritebatch.Draw(Texture,
             new((int)Position.X, (int)Position.Y, Width, Height),
-            new(width * (CurrentFrame % columns), height * (CurrentFrame / columns), width, height),
+            new(width * (CurrentFrame % _columns), height * (CurrentFrame / _columns), width, height),
             Color.White, Rotation, Origin, Effect, 1);
         }
     }

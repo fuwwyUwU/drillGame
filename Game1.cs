@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using nekoT;
 
 namespace drillGame
 {
@@ -9,6 +10,7 @@ namespace drillGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D box; //used as a temp sprite
+        private SpriteAtlas atlas;
         
         public Game1()
         {
