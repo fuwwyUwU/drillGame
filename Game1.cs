@@ -43,13 +43,16 @@ namespace drillGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            if (IsActive)
             {
-                Thread.Sleep(250);
-                gen.tiles.Clear();
-                gen.Generate(96, 56);
-                Window.Title = gen.seed.ToString();
-                Thread.Sleep(250);
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                {
+                    Thread.Sleep(250);
+                    gen.tiles.Clear();
+                    gen.Generate(96, 56);
+                    Window.Title = gen.seed.ToString();
+                    Thread.Sleep(250);
+                }
             }
             // TODO: Add your update logic here
 
@@ -58,7 +61,7 @@ namespace drillGame
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin();
             // TODO: Add your drawing code here
