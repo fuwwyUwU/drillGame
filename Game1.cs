@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using nekoT;
+using System.Threading;
 
 namespace drillGame
 {
@@ -30,10 +31,10 @@ namespace drillGame
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            gen.grassTile = Content.Load<Texture2D>("box");
+            gen.grassTile = Content.Load<Texture2D>("grass");
             gen.sandTile = Content.Load<Texture2D>("sandtile");
             gen.waterTile = Content.Load<Texture2D>("watertile");
-            gen.Generate(24, 24);
+            gen.Generate(96, 56);
             Window.Title = gen.seed.ToString();
             box = Content.Load<Texture2D>("box");
         }
@@ -42,7 +43,14 @@ namespace drillGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                Thread.Sleep(250);
+                gen.tiles.Clear();
+                gen.Generate(96, 56);
+                Window.Title = gen.seed.ToString();
+                Thread.Sleep(250);
+            }
             // TODO: Add your update logic here
 
             base.Update(gameTime);

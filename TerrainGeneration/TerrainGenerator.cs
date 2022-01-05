@@ -26,17 +26,21 @@ namespace TerrainGeneration
                 for (float y = 0; y < height; y++)
                 {
                     float value = (Noise.Generate((x / width) * seed, (y / height) * seed) + 1);
-                    if (value <= 0.2f)
+                    if (y == 0 && value > 1.5f) { tiles.Add(new Tile(new Vector2(x, y), grassTile)); continue; }
+                    if (value <= 0.7f)
                     {
                         tiles.Add(new Tile(new Vector2(x,y), grassTile));
+                        continue;
                     }
-                    else if (value > 0.2f && value <= 1f)
+                    else if (value > 1f && value <= 1.9f)
                         {
                         tiles.Add(new Tile(new Vector2(x, y), sandTile));
+                        continue;
                     }
                     else
                     {
                         tiles.Add(new Tile(new Vector2(x, y), waterTile));
+                        continue;
                     }
                 }
             }
