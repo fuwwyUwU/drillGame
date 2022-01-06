@@ -14,12 +14,18 @@ namespace drillGame
         public Vector2 position;
         public readonly Texture2D sprite;
         public const int size = 16;
+        public readonly bool isBreakable;
 
-        public Tile(Vector2 _position, Texture2D _sprite)
+        public Tile(Texture2D _sprite)
         {
-            position.X = _position.X * _sprite.Width;
-            position.Y = _position.Y * _sprite.Height;
             sprite = _sprite;
+            isBreakable = true;
+        }
+
+        public Tile(Texture2D _sprite, bool _isBreakable)
+        {
+            sprite = _sprite;
+            isBreakable = _isBreakable;
         }
     }
 }

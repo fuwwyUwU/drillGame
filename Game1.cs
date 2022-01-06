@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using nekoT;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace drillGame
 {
@@ -12,6 +13,8 @@ namespace drillGame
         private SpriteBatch _spriteBatch;
         private Texture2D box; //used as a temp sprite
         TerrainGeneration.TerrainGenerator gen;
+        public static List<CollisionManager.AABB> colliders;
+        Drill drill;
         
         public Game1()
         {
@@ -37,6 +40,7 @@ namespace drillGame
             gen.Generate(96, 56);
             Window.Title = gen.seed.ToString();
             box = Content.Load<Texture2D>("box");
+            drill = new Drill(1, gen.tiles);
         }
 
         protected override void Update(GameTime gameTime)
@@ -53,6 +57,11 @@ namespace drillGame
                     Window.Title = gen.seed.ToString();
                     Thread.Sleep(250);
                 }
+
+                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                {
+                    drill.Dig(gameTime, Mouse.GetState().Position.ToVector2());
+                }
             }
             // TODO: Add your update logic here
 
@@ -67,9 +76,11 @@ namespace drillGame
             // TODO: Add your drawing code here
             foreach(var tile in gen.tiles)
             {
-                _spriteBatch.Draw(tile.sprite, tile.position, Color.White);
+                _spriteBatch.Draw(tile.Value.sprite, tile.Key * Tile.size, Color.White);
             }
-            _spriteBatch.Draw(box, Mouse.GetState().Position.ToVector2(), Color.DarkOrange);
+
+            
+
             _spriteBatch.End();
             base.Draw(gameTime);
         }
