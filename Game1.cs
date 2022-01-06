@@ -42,9 +42,9 @@ namespace drillGame
             gen.waterTile = Content.Load<Texture2D>("watertile");
             gen.Generate(96, 56);
             Window.Title = gen.seed.ToString();
-            box = Content.Load<Texture2D>("Drills");
+            box = Content.Load<Texture2D>("box");
             drill = new Drill(1, gen.tiles);
-            _player = new Player(box, Vector2.Zero, drill);
+            _player = new Player(Content.Load<Texture2D>("Drills"), Vector2.Zero, drill);
          //   _player = new(drill,);
         }
 
