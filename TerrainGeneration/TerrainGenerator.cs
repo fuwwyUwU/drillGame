@@ -48,6 +48,7 @@ namespace TerrainGeneration
                     }
                 }
             }
+            foreach (Tile t in tiles) t.position.Y += 1; // this adds space to world so all tiles well be 0y + value from world 0 :D
         }
 
         public int GenerateSeed()
@@ -68,7 +69,7 @@ namespace TerrainGeneration
         {
             foreach(var tile in tiles)
             {
-                spriteBatch.Draw(tile.sprite, tile.position * Tile.size, Color.White);
+                tile.Draw(spriteBatch);
             }
         }
     }
