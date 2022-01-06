@@ -81,8 +81,10 @@ namespace drillGame
             _spriteBatch.Begin();
             // TODO: Add your drawing code here
             gen.Draw(_spriteBatch);
+
             _player.Draw(_spriteBatch);
             
+
 
             _spriteBatch.End();
             base.Draw(gameTime);

@@ -30,5 +30,9 @@ namespace drillGame
             sprite = _sprite;
             isBreakable = _isBreakable;
         }
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(sprite, position * size, Color.White);
+        }
     }
 }
