@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace drillGame
 {
@@ -17,17 +18,19 @@ namespace drillGame
         public void Dig(GameTime gameTime, Vector2 playerPosition)
         {
             if (lastDrill + cooldown > (float)gameTime.TotalGameTime.TotalSeconds) return;
-
             lastDrill = (float)gameTime.TotalGameTime.TotalSeconds;
             playerPosition -= new Vector2(Tile.size * .5f, Tile.size * .5f);
-            playerPosition *= 0.065f;
-            tiles.Remove(new Vector2((int)playerPosition.X, (int)playerPosition.Y));
+            playerPosition *= 0.0625f;
+            tiles.Remove(new Vector2(MathF.Round(playerPosition.X), MathF.Round(playerPosition.Y)));
         }
 
         public Drill(float _cooldown, Dictionary<Vector2, Tile> _tiles)
         {
             cooldown = _cooldown;
             tiles = _tiles;
+
+            
         }
     }
 }
+
