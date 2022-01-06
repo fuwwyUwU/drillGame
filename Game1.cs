@@ -17,7 +17,6 @@ namespace drillGame
         Drill drill;
         Player _player;
         Camera _cam;
-
         
         public Game1()
         {
@@ -47,7 +46,7 @@ namespace drillGame
 
 
             drill = new Drill(1, gen.tiles);
-            _player = new Player(Vector2.Zero, drill, box);
+            _player = new Player(box, Vector2.Zero, drill);
          //   _player = new(drill,);
         }
 
@@ -68,7 +67,7 @@ namespace drillGame
                     Thread.Sleep(250);
                 }
 
-                _player.Update(gameTime);
+                _player.Update(gameTime, _cam);
             }
 
 
