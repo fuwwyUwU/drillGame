@@ -7,20 +7,22 @@ using Microsoft.Xna.Framework;
 
 namespace drillGame
 {
+
+
+    public struct AABB
+    {
+        public Vector2 Position;
+        public Vector2 HalfExtents;
+
+        public AABB(Vector2 position, Vector2 halfExtents)
+        {
+            Position = position;
+            HalfExtents = halfExtents;
+        }
+    }
+
     public static class CollisionManager
     {
-        public struct AABB
-        {
-            public Vector2 Position;
-            public Vector2 HalfExtents;
-
-            public AABB(Vector2 position, Vector2 halfExtents)
-            {
-                Position = position;
-                HalfExtents = halfExtents;
-            }
-        }
-
         public struct Hit
         {
             public bool valid;

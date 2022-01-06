@@ -11,9 +11,9 @@ namespace drillGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D box; //used as a temp sprite
+        public static Texture2D box; //used as a temp sprite
         TerrainGeneration.TerrainGenerator gen;
-        public static List<CollisionManager.AABB> colliders;
+        public static List<AABB> colliders;
         Drill drill;
         Player _player;
         Camera _cam;
@@ -44,6 +44,7 @@ namespace drillGame
             Window.Title = gen.seed.ToString();
             box = Content.Load<Texture2D>("box");
             drill = new Drill(1, gen.tiles);
+            _player = new Player(Vector2.Zero, drill, box, 1, 1, 1);
          //   _player = new(drill,);
         }
 
@@ -64,11 +65,10 @@ namespace drillGame
                     Thread.Sleep(250);
                 }
 
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                {
-                    drill.Dig(gameTime, Mouse.GetState().Position.ToVector2());
-                }
+                _player.Update(gameTime);
             }
+
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -81,7 +81,7 @@ namespace drillGame
             _spriteBatch.Begin();
             // TODO: Add your drawing code here
             gen.Draw(_spriteBatch);
-
+            _player.Draw(_spriteBatch);
             
 
             _spriteBatch.End();

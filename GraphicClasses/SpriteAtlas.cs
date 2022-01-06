@@ -13,7 +13,7 @@ namespace nekoT
         public SpriteAtlas parent;
         public Vector2 Direction;
         public Vector2 Position;
-        public Vector2 Origin { get; private set; }
+        public Vector2 Origin { get; protected set; }
         public bool isRemoved = false;
         public float Rotation { get; set; }
         public int CurrentFrame { set; get; }
