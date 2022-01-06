@@ -15,6 +15,8 @@ namespace drillGame
         TerrainGeneration.TerrainGenerator gen;
         public static List<CollisionManager.AABB> colliders;
         Drill drill;
+        Player _player;
+        Camera _cam;
         
         public Game1()
         {
@@ -28,6 +30,7 @@ namespace drillGame
         {
             // TODO: Add your initialization logic here
             gen = new();
+            _cam = new();
             base.Initialize();
         }
 
@@ -41,14 +44,17 @@ namespace drillGame
             Window.Title = gen.seed.ToString();
             box = Content.Load<Texture2D>("box");
             drill = new Drill(1, gen.tiles);
+         //   _player = new(drill,);
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
             if (IsActive)
             {
+                _cam.View = GraphicsDevice.Viewport;
                 if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                 {
                     Thread.Sleep(250);
@@ -74,9 +80,9 @@ namespace drillGame
 
             _spriteBatch.Begin();
             // TODO: Add your drawing code here
-            foreach(var tile in gen.tiles)
+            foreach(Tile tile in gen.tiles)
             {
-                _spriteBatch.Draw(tile.Value.sprite, tile.Key * Tile.size, Color.White);
+                tile.Draw(_spriteBatch);
             }
 
             

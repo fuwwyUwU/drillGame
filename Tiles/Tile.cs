@@ -16,16 +16,23 @@ namespace drillGame
         public const int size = 16;
         public readonly bool isBreakable;
 
-        public Tile(Texture2D _sprite)
+        public Tile(Texture2D _sprite, float x, float y)
         {
+
             sprite = _sprite;
+            position.X +=  x* sprite.Width;
+            position.Y += y*sprite.Height;
             isBreakable = true;
         }
 
-        public Tile(Texture2D _sprite, bool _isBreakable)
+        public Tile(Texture2D _sprite, float x, float y, bool _isBreakable)
         {
             sprite = _sprite;
             isBreakable = _isBreakable;
+        }
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(sprite, position, Color.White);
         }
     }
 }

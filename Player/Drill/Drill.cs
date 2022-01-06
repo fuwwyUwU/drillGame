@@ -13,18 +13,19 @@ namespace drillGame
         public float cooldown;
         private float lastDrill = 0;
 
-        private Dictionary<Vector2, Tile> tiles;
+        private List<Tile> tiles;
         //drills, you cant have a function with the same name as its enclosing type, which is why i choose Dig
+        //bro help me how your code work
         public void Dig(GameTime gameTime, Vector2 playerPosition)
         {
             if (lastDrill + cooldown > (float)gameTime.TotalGameTime.TotalSeconds) return;
             lastDrill = (float)gameTime.TotalGameTime.TotalSeconds;
             playerPosition -= new Vector2(Tile.size * .5f, Tile.size * .5f);
             playerPosition *= 0.0625f;
-            tiles.Remove(new Vector2(MathF.Round(playerPosition.X), MathF.Round(playerPosition.Y)));
+            tiles.RemoveAll(item => item.position == new Vector2(MathF.Round(playerPosition.X), MathF.Round(playerPosition.Y)));
         }
 
-        public Drill(float _cooldown, Dictionary<Vector2, Tile> _tiles)
+        public Drill(float _cooldown, List<Tile> _tiles)
         {
             cooldown = _cooldown;
             tiles = _tiles;

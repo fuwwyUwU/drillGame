@@ -19,10 +19,10 @@ namespace nekoT
         private float Zoom_ { get { return Zoom = Zoom >= 0.1f ? Zoom : Zoom = 0.1f; } }
 
 
-        public void Follow(SpriteAtlas target)
+        public void Follow(Vector2 targetpos)
         {
             RotationDegrees = RotationDegrees >= 360 ? 0 : RotationDegrees;
-            Transform = Matrix.CreateTranslation(-target.Position.X, -target.Position.Y, 0)
+            Transform = Matrix.CreateTranslation(-targetpos.X, -targetpos.Y, 0)
             * Matrix.CreateScale(Zoom_, Zoom_, 1)
             * Matrix.CreateRotationZ(RotationDegrees)
             * Matrix.CreateTranslation(View.Width * 0.5f, View.Height * 0.5f, 0);

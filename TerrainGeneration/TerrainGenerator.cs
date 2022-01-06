@@ -12,14 +12,14 @@ namespace TerrainGeneration
 {
     public class TerrainGenerator
     {
-        public Dictionary<Vector2, Tile> tiles = new Dictionary<Vector2,Tile>();
+        public List<Tile> tiles = new();
         public int seed;
        // private int width, height;
         public Texture2D grassTile, sandTile, waterTile;
 
         public void Generate(int width, int height)
         {
-            tiles.Clear();
+
             seed = GenerateSeed();
             for (float x = 0; x < width; x++)
             {
@@ -29,17 +29,17 @@ namespace TerrainGeneration
                     //if (y == 0 && value >= 1.5f) { tiles.Add(new Tile(new Vector2(x, y), grassTile)); continue; }
                     if (value < 0.3f && y * value < 1f)
                     {
-                        tiles.Add(new Vector2(x, y), new Tile(waterTile));
+                        tiles.Add( new Tile(waterTile, x, y));
                         continue;
                     }
                     else if ( y * value < 8)
                     {
-                        tiles.Add(new Vector2(x, y), new Tile(grassTile));
+                        tiles.Add( new Tile(grassTile, x, y));
                         continue;
                     }
                     else if (value >= 0.3f && value <= 2f)
                         {
-                        tiles.Add(new Vector2(x, y), new Tile(sandTile));
+                        tiles.Add( new Tile(sandTile, x, y));
                         continue;
                     }
                     else
@@ -48,6 +48,7 @@ namespace TerrainGeneration
                     }
                 }
             }
+            foreach (var tile in tiles) tile.position.Y += tile.sprite.Height;
         }
 
         public int GenerateSeed()
