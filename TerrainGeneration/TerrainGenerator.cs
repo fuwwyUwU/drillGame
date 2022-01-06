@@ -48,7 +48,6 @@ namespace TerrainGeneration
                     }
                 }
             }
-            foreach (var tile in tiles) tile.position.Y += tile.sprite.Height;
         }
 
         public int GenerateSeed()
@@ -63,6 +62,14 @@ namespace TerrainGeneration
             }
 
             return result;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach(var tile in tiles)
+            {
+                spriteBatch.Draw(tile.sprite, tile.position * Tile.size, Color.White);
+            }
         }
     }
 }

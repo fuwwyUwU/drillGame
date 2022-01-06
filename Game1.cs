@@ -80,10 +80,7 @@ namespace drillGame
 
             _spriteBatch.Begin();
             // TODO: Add your drawing code here
-            foreach(Tile tile in gen.tiles)
-            {
-                tile.Draw(_spriteBatch);
-            }
+            gen.Draw(_spriteBatch);
 
             
 

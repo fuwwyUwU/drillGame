@@ -20,8 +20,8 @@ namespace drillGame
         {
 
             sprite = _sprite;
-            position.X +=  x* sprite.Width;
-            position.Y += y*sprite.Height;
+            position.X += x;
+            position.Y += y;
             isBreakable = true;
         }
 
@@ -29,10 +29,6 @@ namespace drillGame
         {
             sprite = _sprite;
             isBreakable = _isBreakable;
-        }
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(sprite, position, Color.White);
         }
     }
 }
