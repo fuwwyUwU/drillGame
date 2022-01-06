@@ -17,6 +17,7 @@ namespace drillGame
         Drill drill;
         Player _player;
         Camera _cam;
+
         
         public Game1()
         {
@@ -43,8 +44,10 @@ namespace drillGame
             gen.Generate(96, 56);
             Window.Title = gen.seed.ToString();
             box = Content.Load<Texture2D>("box");
+
+
             drill = new Drill(1, gen.tiles);
-            _player = new Player(Vector2.Zero, drill, box, 1, 1, 1);
+            _player = new Player(Vector2.Zero, drill, box);
          //   _player = new(drill,);
         }
 
