@@ -22,7 +22,12 @@ namespace nekoT
         private int width, height = 1;
         private int _columns;
         public SpriteEffects Effect;
-        public SpriteAtlas(Texture2D spritesheet, int rows, int columns, int frame)
+        public SpriteAtlas(Texture2D spritesheet, int rows, int columns, int frame)// how rows and columsn mean
+            // imagine grid
+            //row| column| column
+            //row| column| column
+            //row| column| column
+            //thats 3 rows 3 columns. If you think rows == 0 set rows to 1 to not cause error( also your brain error)
         {
             Texture = spritesheet;
             _columns = columns;

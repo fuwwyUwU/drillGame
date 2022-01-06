@@ -21,7 +21,7 @@ namespace drillGame
         float speed = 16;
         
 
-        public Player(Vector2 _position, Drill _drill, Texture2D spritesheet) : base(spritesheet, 4, 1, 0)
+        public Player(Texture2D spritesheet, Vector2 _position, Drill _drill ) : base(spritesheet, 1, 4, 0) // check spriteatlas
         {
             drill = _drill;
             aabb = new AABB();
