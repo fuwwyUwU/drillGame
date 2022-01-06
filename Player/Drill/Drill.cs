@@ -23,9 +23,6 @@ namespace drillGame
 
             lastDrill = (float)gameTime.TotalGameTime.TotalSeconds;
 
-            //account for the origin of where the sprites are drawn
-            removeAt -= new Vector2(Tile.size * .5f, Tile.size * .5f);
-
             //divide by 16, because a tile is 16px^2
             removeAt *= 0.0625f;
 
