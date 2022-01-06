@@ -21,7 +21,7 @@ namespace drillGame
         float speed = 16;
         
 
-        public Player(Vector2 _position, Drill _drill, Texture2D spritesheet, int rows, int columns, int frame) : base(spritesheet, rows, columns, frame)
+        public Player(Vector2 _position, Drill _drill, Texture2D spritesheet) : base(spritesheet, 4, 1, 0)
         {
             drill = _drill;
             aabb = new AABB();
@@ -29,7 +29,7 @@ namespace drillGame
             Origin = new Vector2(8, 8);
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Camera camera)
         {
             var ks = Keyboard.GetState();
             if (ks.IsKeyDown(input.up))
