@@ -42,9 +42,9 @@ namespace drillGame
             gen.waterTile = Content.Load<Texture2D>("watertile");
             gen.Generate(96, 56);
             Window.Title = gen.seed.ToString();
-            box = Content.Load<Texture2D>("box");
+            box = Content.Load<Texture2D>("Drills");
             drill = new Drill(1, gen.tiles);
-            _player = new Player(Vector2.Zero, drill, box, 1, 1, 1);
+            _player = new Player(box, Vector2.Zero, drill);
          //   _player = new(drill,);
         }
 
@@ -65,7 +65,8 @@ namespace drillGame
                     Thread.Sleep(250);
                 }
 
-                _player.Update(gameTime);
+                _player.Update(gameTime,_cam);
+                _cam.Follow(_player.Position);
             }
 
 
@@ -78,7 +79,7 @@ namespace drillGame
         {
             GraphicsDevice.Clear(Color.Black);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(transformMatrix:_cam.Transform, samplerState:SamplerState.PointClamp);
             // TODO: Add your drawing code here
             gen.Draw(_spriteBatch);
 

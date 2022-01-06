@@ -18,7 +18,7 @@ namespace drillGame
         Drill drill;
         AABB aabb;
         Vector2 velocity = Vector2.Zero;
-        float speed = 16;
+        float speed = 4;
         
 
         public Player(Texture2D spritesheet, Vector2 _position, Drill _drill ) : base(spritesheet, 1, 4, 0) // check spriteatlas
@@ -26,7 +26,8 @@ namespace drillGame
             drill = _drill;
             aabb = new AABB();
             Position = _position;
-            Origin = new Vector2(8, 8);
+            Width = 32;
+            Height = 64;
         }
 
         public override void Update(GameTime gameTime, Camera camera)
@@ -54,11 +55,11 @@ namespace drillGame
 
             if (ks.IsKeyDown(input.interact))
             {
-                drill.Dig(gameTime, new Vector2(Position.X, Position.Y + 16));
+                drill.Dig(gameTime, new Vector2(Position.X, Position.Y + Origin.Y)); // please fix dig its broken again
             }
 
 
-            Position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Position += velocity;
             velocity = Vector2.Zero;
         }
     }

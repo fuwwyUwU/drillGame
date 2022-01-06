@@ -14,7 +14,7 @@ namespace nekoT
         public Viewport View { get; set; }
         public float RotationDegrees = 0;
 
-        public float Zoom = 1f;
+        public float Zoom = 3f;
 
         private float Zoom_ { get { return Zoom = Zoom >= 0.1f ? Zoom : Zoom = 0.1f; } }
 
