@@ -32,17 +32,13 @@ namespace drillGame
             removeAt = new Vector2(MathF.Round(removeAt.X), MathF.Round(removeAt.Y));
             //remove the tile at the given position
             // round to the nearest center as all tiles position is based on thier center
-            List<Tile> tilesToRemove = new();
-            foreach (var tile in tiles)
+            for (int i = 0; i < tiles.Count; i++)
             {
-                if (tile.position == removeAt)
+                if (tiles[i].position == removeAt)
                 {
-                    tilesToRemove.Add(tile);
+                    tiles.RemoveAt(i);
+                    i--;
                 }
-            }
-            for (int i = 0; i < tilesToRemove.Count; i++)
-            {
-                tiles.Remove(tilesToRemove[0]);
             }
         }
 
