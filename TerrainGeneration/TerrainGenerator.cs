@@ -13,6 +13,7 @@ namespace TerrainGeneration
     public class TerrainGenerator
     {
         public List<Tile> tiles = new();
+        private Random rand = new();
         public int seed;
        // private int width, height;
         public Texture2D treeTile, grassTile, sandTile, waterTile;
@@ -21,12 +22,15 @@ namespace TerrainGeneration
         {
 
             seed = GenerateSeed();
+            tiles.Add(new Tile(treeTile, rand.Next(0, width), -1));
+            // spawn for tree shouldn't depend from seed cuz hard to make xD. and there will be
+            //chance for it to not spawn or spawn multiple times(would be fixeable but still)
             for (float x = 0; x < width; x++)
             {
                 for (float y = 0; y < height; y++)
                 {
                     float value = (Noise.Generate((x / width) * seed, (y / height) * seed) + 1);
-                    if (y == 0 && value < 0.2f) { tiles.Add(new Tile(treeTile , x, y - 1)); }
+
                     if (value <= 0.6f && y * value < 0.7f)
                     {
                         tiles.Add( new Tile(waterTile, x, y));
