@@ -17,7 +17,9 @@ namespace drillGame
         Drill drill;
         Player _player;
         Camera _cam;
-        
+        Effect infinity;
+
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -37,16 +39,19 @@ namespace drillGame
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            
             gen = new()
             {
                 treeTile = Content.Load<Texture2D>("treeTile"),
                 waterTile = Content.Load<Texture2D>("watertile")
                 ,
                 grassTile = Content.Load<Texture2D>("grass"),
+                dirtTile = Content.Load<Texture2D>("dirtTile"),
                 sandTile = Content.Load<Texture2D>("sandtile"),
         };
             gen.Generate(96, 56);
             Window.Title = gen.seed.ToString();
+            infinity = Content.Load<Effect>("infinite");
             box = Content.Load<Texture2D>("box");
             drill = new Drill(1, gen.tiles);
             _player = new Player(Content.Load<Texture2D>("Drills"), Vector2.Zero, drill);
@@ -85,6 +90,8 @@ namespace drillGame
             GraphicsDevice.Clear(Color.SkyBlue);
 
             _spriteBatch.Begin(transformMatrix:_cam.Transform, samplerState:SamplerState.PointClamp);
+
+
             // TODO: Add your drawing code here
             gen.Draw(_spriteBatch);
 

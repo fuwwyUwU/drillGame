@@ -16,7 +16,7 @@ namespace TerrainGeneration
         private Random rand = new();
         public int seed;
        // private int width, height;
-        public Texture2D treeTile, grassTile, sandTile, waterTile;
+        public Texture2D treeTile, grassTile, dirtTile, sandTile, waterTile;
 
         public void Generate(int width, int height)
         {
@@ -38,7 +38,11 @@ namespace TerrainGeneration
                     }
                     else if ( y * value < 8)
                     {
-                        tiles.Add( new Tile(grassTile, x, y));
+                        if (tiles[tiles.Count - 1].sprite == grassTile || tiles[tiles.Count -1].sprite == dirtTile) { tiles.Add(new Tile(dirtTile, x, y)); }
+                        else
+                        {
+                            tiles.Add(new Tile(grassTile, x, y));
+                        }
                         continue;
                     }
                     else if (value >= 0.3f && value <= 2f)

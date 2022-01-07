@@ -28,8 +28,8 @@ namespace drillGame
             drill = _drill;
             aabb = new AABB();
             Position = _position;
-            Width = 32;
-            Height = 64;
+            Width = 16;
+            Height = 32;
         }
 
         public override void Update(GameTime gameTime, Camera camera)
