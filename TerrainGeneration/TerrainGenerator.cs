@@ -15,7 +15,7 @@ namespace TerrainGeneration
         public List<Tile> tiles = new();
         public int seed;
        // private int width, height;
-        public Texture2D grassTile, sandTile, waterTile;
+        public Texture2D treeTile, grassTile, sandTile, waterTile;
 
         public void Generate(int width, int height)
         {
@@ -26,8 +26,8 @@ namespace TerrainGeneration
                 for (float y = 0; y < height; y++)
                 {
                     float value = (Noise.Generate((x / width) * seed, (y / height) * seed) + 1);
-                    //if (y == 0 && value >= 1.5f) { tiles.Add(new Tile(new Vector2(x, y), grassTile)); continue; }
-                    if (value < 0.3f && y * value < 1f)
+                    if (y == 0 && value < 0.2f) { tiles.Add(new Tile(treeTile , x, y - 1)); }
+                    if (value <= 0.6f && y * value < 0.7f)
                     {
                         tiles.Add( new Tile(waterTile, x, y));
                         continue;

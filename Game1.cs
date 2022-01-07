@@ -29,7 +29,7 @@ namespace drillGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            gen = new();
+            
             _cam = new();
             base.Initialize();
         }
@@ -37,9 +37,14 @@ namespace drillGame
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            gen.grassTile = Content.Load<Texture2D>("grass");
-            gen.sandTile = Content.Load<Texture2D>("sandtile");
-            gen.waterTile = Content.Load<Texture2D>("watertile");
+            gen = new()
+            {
+                treeTile = Content.Load<Texture2D>("treeTile"),
+                waterTile = Content.Load<Texture2D>("watertile")
+                ,
+                grassTile = Content.Load<Texture2D>("grass"),
+                sandTile = Content.Load<Texture2D>("sandtile"),
+        };
             gen.Generate(96, 56);
             Window.Title = gen.seed.ToString();
             box = Content.Load<Texture2D>("box");
