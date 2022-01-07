@@ -31,7 +31,7 @@ namespace drillGame
             // round to the nearest center as all tiles position is based on thier center
             for (int i = 0; i < tiles.Count; i++)
             {
-                if (tiles[i].position == removeAt)
+                if (tiles[i].isBreakable &&  tiles[i].position == removeAt)
                 {
                     tiles.RemoveAt(i);
                     i--;

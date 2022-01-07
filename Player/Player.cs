@@ -26,10 +26,10 @@ namespace drillGame
         {
             InputWrapper.SetKeys(Keys.W, Keys.S, Keys.A, Keys.D, Keys.X, Keys.OemPlus, Keys.OemMinus); //Made inputWrapper static class because i can
             drill = _drill;
-            aabb = new AABB();
+            aabb = new AABB(Position, new Vector2(16, 32));
             Position = _position;
-            Width = 16;
-            Height = 32;
+            Width = 8;
+            Height = 16;
         }
 
         public override void Update(GameTime gameTime, Camera camera)
@@ -61,7 +61,16 @@ namespace drillGame
             }
 
 
-            Position += velocity;
+            var sweep = CollisionManager.TryMoveAABB(aabb, velocity);
+            Debug.WriteLine($"{aabb.Position} {aabb.HalfExtents}");
+
+            if (!sweep.hit.valid || sweep.time <= 0)
+            {
+                Position += velocity;
+                Debug.WriteLine("no hit");
+            }
+            else Position = sweep.position;
+            aabb.Position = Position;
             velocity = Vector2.Zero;
             camZoom(camera);
         }

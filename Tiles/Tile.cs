@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 
 namespace drillGame
@@ -16,12 +17,13 @@ namespace drillGame
         public const int size = 16;
         public readonly bool isBreakable;
 
+
         public Tile(Texture2D _sprite, float x, float y)
         {
 
             sprite = _sprite;
-            position.X += x;
-            position.Y += y;
+            position.X = x;
+            position.Y = y;
             isBreakable = true;
         }
 
@@ -29,6 +31,8 @@ namespace drillGame
         {
             sprite = _sprite;
             isBreakable = _isBreakable;
+            position.X = x;
+            position.Y = y;
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -36,3 +40,4 @@ namespace drillGame
         }
     }
 }
+
