@@ -8,7 +8,7 @@
 
 float4x4 view_projection;
 float4x4 uv_transform;
-sampler TextureSampler : register(s0);
+sampler TextureSampler : register(s0); // what is this shader for?
 
 struct VertexInput {
     float4 Position : POSITION0;
