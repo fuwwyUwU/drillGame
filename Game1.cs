@@ -82,7 +82,7 @@ namespace drillGame
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.SkyBlue);
 
             _spriteBatch.Begin(transformMatrix:_cam.Transform, samplerState:SamplerState.PointClamp);
             // TODO: Add your drawing code here
