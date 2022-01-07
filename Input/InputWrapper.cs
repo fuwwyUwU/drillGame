@@ -7,12 +7,24 @@ using Microsoft.Xna.Framework.Input;
 
 namespace drillGame
 {
-    public class InputWrapper
+    public static class InputWrapper
     {
-        public Keys up;
-        public Keys down;
-        public Keys left;
-        public Keys right;
-        public Keys interact;
+        public static Keys Up;
+        public static Keys Down;
+        public static Keys Left;
+        public static Keys Right;
+        public static Keys Interact;
+        public static Keys ZoomPlus;
+        public static Keys ZoomMinus;
+        public static void SetKeys(Keys up, Keys down, Keys left, Keys right, Keys interact, Keys zoomPlus, Keys zoomMinus) //this is better maybe :D
+        {
+            Up = up;
+            Down = down;
+            Left = left;
+            Right = right;
+            Interact = interact;
+            ZoomPlus = zoomPlus;
+            ZoomMinus = zoomMinus;
+        }
     }
 }
