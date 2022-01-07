@@ -18,16 +18,16 @@ namespace drillGame
         Drill drill;
         AABB aabb;
         Vector2 velocity = Vector2.Zero;
-        float speed = 4;
+        float speed = 1;
         
 
         public Player(Texture2D spritesheet, Vector2 _position, Drill _drill ) : base(spritesheet, 1, 4, 0) // check spriteatlas
         {
             drill = _drill;
-            aabb = new AABB();
+            aabb = new AABB(Position, new Vector2(16, 32));
             Position = _position;
-            Width = 32;
-            Height = 64;
+            Width = 8;
+            Height = 16;
         }
 
         public override void Update(GameTime gameTime, Camera camera)
@@ -59,7 +59,16 @@ namespace drillGame
             }
 
 
-            Position += velocity;
+            var sweep = CollisionManager.TryMoveAABB(aabb, velocity);
+            Debug.WriteLine($"{aabb.Position} {aabb.HalfExtents}");
+
+            if (!sweep.hit.valid || sweep.time <= 0)
+            {
+                Position += velocity;
+                Debug.WriteLine("no hit");
+            }
+            else Position = sweep.position;
+            aabb.Position = Position;
             velocity = Vector2.Zero;
         }
     }

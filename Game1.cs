@@ -29,7 +29,7 @@ namespace drillGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+            colliders = new List<AABB>();
             _cam = new();
             base.Initialize();
         }
@@ -49,7 +49,7 @@ namespace drillGame
             Window.Title = gen.seed.ToString();
             box = Content.Load<Texture2D>("box");
             drill = new Drill(1, gen.tiles);
-            _player = new Player(Content.Load<Texture2D>("Drills"), Vector2.Zero, drill);
+            _player = new Player(box, Vector2.Zero, drill);
          //   _player = new(drill,);
         }
 
