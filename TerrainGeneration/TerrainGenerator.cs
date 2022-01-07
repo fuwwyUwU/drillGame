@@ -38,7 +38,7 @@ namespace TerrainGeneration
                     }
                     else if ( y * value < 8)
                     {
-                        if (tiles[tiles.Count - 1].sprite == grassTile || tiles[tiles.Count -1].sprite == dirtTile) { tiles.Add(new Tile(dirtTile, x, y)); }
+                        if (tiles[tiles.Count - 1].sprite == grassTile || tiles[tiles.Count -1].sprite == dirtTile) tiles.Add(new Tile(dirtTile, x, y));// code that make cool shit
                         else
                         {
                             tiles.Add(new Tile(grassTile, x, y));
