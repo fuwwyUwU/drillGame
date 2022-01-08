@@ -29,21 +29,21 @@ namespace drillGame
             removeAt = new Vector2(MathF.Round(removeAt.X), MathF.Round(removeAt.Y));
             //remove the tile at the given position
             // round to the nearest center as all tiles position is based on thier center
-            for (int i = 0; i < tiles.Count; i++)
-            {
-                if (tiles[i].isBreakable &&  tiles[i].position == removeAt)
-                {
-                    tiles.RemoveAt(i);
-                    i--;
-                }
-            }
+            //for (int i = 0; i < tiles.Count; i++)
+            //{
+            //    if (tiles[i].isBreakable &&  tiles[i].position == removeAt)
+            //    {
+            //        tiles.RemoveAt(i);
+            //        i--;
+            //    }
+            //}
         }
 
-        public Drill(float _cooldown, List<Tile> _tiles)
+        public Drill(float _cooldown, List<Chunk> _chunks)
         {
             cooldown = _cooldown;
             
-            tiles = _tiles; //the tilemap it will remove from
+            tiles = new List<Tile>(); //the tilemap it will remove from
 
             
         }

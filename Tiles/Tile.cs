@@ -12,29 +12,24 @@ namespace drillGame
 {
     public class Tile
     {
-        public Vector2 position;
         public readonly Texture2D sprite;
         public const int size = 16;
         public readonly bool isBreakable;
 
 
-        public Tile(Texture2D _sprite, float x, float y)
+        public Tile(Texture2D _sprite)
         {
 
             sprite = _sprite;
-            position.X = x;
-            position.Y = y;
             isBreakable = true;
         }
 
-        public Tile(Texture2D _sprite, float x, float y, bool _isBreakable)
+        public Tile(Texture2D _sprite, bool _isBreakable)
         {
             sprite = _sprite;
             isBreakable = _isBreakable;
-            position.X = x;
-            position.Y = y;
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             spriteBatch.Draw(sprite, position * size, Color.White);
         }

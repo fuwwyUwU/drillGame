@@ -6,53 +6,68 @@ using System.Threading.Tasks;
 using drillGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SimplexNoise;
+using FNL;
+using System.Diagnostics;
 
 namespace TerrainGeneration
 {
     public class TerrainGenerator
     {
-        public List<Tile> tiles = new();
-        private Random rand = new();
-        public int seed;
+        public List<Chunk> chunks = new();
+
        // private int width, height;
         public Texture2D treeTile, grassTile, sandTile, waterTile;
+        float scale = 0.00001f;
+        FastNoiseLite noise;
+        public int seed;
+
+        public TerrainGenerator()
+        {
+            noise = new FastNoiseLite();
+            seed = GenerateSeed();
+            noise.SetSeed(seed);
+            noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2S);
+        }
+
+        Tile GetTile(float value)
+        {
+            if (value < 0) return new Tile(grassTile);
+            else if (value > 0) return new Tile(sandTile);
+            else if (value == 0) return new Tile(waterTile);
+            else return new Tile(treeTile);
+            
+        }
+
+        Chunk GenerateChunk(Vector2 chunk)
+        {
+            Chunk _chunk = new Chunk();
+            _chunk.position = chunk;
+            _chunk.tiles = new Tile[8, 8];
+            for (int x = 0; x < Chunk.width; x++)
+            {
+                for (int y = 0; y < Chunk.height; y++)
+                {
+                    float value = noise.GetNoise((chunk.X * 8 + x) * scale, (chunk.Y * 8 + y) * scale);
+                    _chunk.tiles[x, y] = GetTile(value);
+                    
+                }
+            }
+            return _chunk;
+        }
+
 
         public void Generate(int width, int height)
         {
-
-            seed = GenerateSeed();
-            tiles.Add(new Tile(treeTile, rand.Next(0, width), -1));
-            // spawn for tree shouldn't depend from seed cuz hard to make xD. and there will be
-            //chance for it to not spawn or spawn multiple times(would be fixeable but still)
-            for (float x = 0; x < width; x++)
+            Debug.WriteLine(chunks.Count);
+            for (int x = 0; x < width; x++)
             {
-                for (float y = 0; y < height; y++)
+                for (int y = 0; y < height; y++)
                 {
-                    float value = (Noise.Generate((x / width) * seed, (y / height) * seed) + 1);
-
-                    if (value <= 0.6f && y * value < 0.7f)
-                    {
-                        tiles.Add( new Tile(waterTile, x, y));
-                        continue;
-                    }
-                    else if ( y * value < 8)
-                    {
-                        tiles.Add( new Tile(grassTile, x, y));
-                        continue;
-                    }
-                    else if (value >= 0.3f && value <= 2f)
-                        {
-                        tiles.Add( new Tile(sandTile, x, y));
-                        continue;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    chunks.Add(GenerateChunk(new Vector2(x, y)));   
                 }
             }
-            foreach (Tile t in tiles) t.position.Y += 1; // this adds space to world so all tiles well be 0y + value from world 0 :D
+            Debug.WriteLine(chunks.Count);
+
         }
 
         public int GenerateSeed()
@@ -71,9 +86,9 @@ namespace TerrainGeneration
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach(var tile in tiles)
+            foreach(var chunk in chunks)
             {
-                tile.Draw(spriteBatch);
+                chunk.Draw(spriteBatch);
             }
         }
     }

@@ -53,7 +53,6 @@ namespace drillGame
 
             //Query for objects in spatial hash. If you don't have a spatial hash yet, just use a list of all AABBs in the world.
             List<AABB> query = Game1.colliders;
-            Debug.WriteLine(query[0].Position);
 
             Sweep nearest = new Sweep();
             nearest.time = 1;
