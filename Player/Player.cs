@@ -80,5 +80,12 @@ namespace drillGame
             if (ks.IsKeyDown(InputWrapper.ZoomPlus)) _cam.Zoom += 0.1f;
             if (ks.IsKeyDown(InputWrapper.ZoomMinus)) _cam.Zoom -= 0.1f;
         }
+
+        public Vector2 GetCurrentChunk()
+        {
+            Vector2 currentChunk = Position * 0.0078125f;
+            return Vector2.Round(currentChunk);
+
+        }
     }
 }

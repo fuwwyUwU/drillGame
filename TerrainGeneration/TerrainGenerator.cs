@@ -21,6 +21,48 @@ namespace TerrainGeneration
         FastNoiseLite noise;
         public int seed;
 
+        List<Vector2> reqchunks = new List<Vector2>();
+
+        public void ReloadChunks(Vector2 centerChunk, Vector2 chunksToLoad)
+        {
+            reqchunks.Clear();
+            //calculate all the chunks which should be in the list
+            
+            for (int i = (int)centerChunk.X - (int)chunksToLoad.X; i <= (int)centerChunk.X + (int)chunksToLoad.X; i++)
+            {
+                for (int j = (int)centerChunk.Y - (int)chunksToLoad.Y; j <= (int)centerChunk.Y + (int)chunksToLoad.Y; j++)
+                {
+                    reqchunks.Add(new Vector2(i, j));
+                }
+            }
+
+            //remove all chunks which arent needed
+            for (int i = chunks.Count; i > 0; i--)
+            {
+                for (int j = reqchunks.Count; j > 0; j--)
+                {
+                    if (chunks[i - 1].position == reqchunks[j - 1])
+                    {
+                        reqchunks.Remove(reqchunks[j - 1]);
+                        break;
+                    }
+
+                    if (j == 1)
+                    {
+                        chunks.Remove(chunks[i - 1]);
+                    }
+                }
+
+
+            }
+
+            //add the new chunks 
+            foreach (var req in reqchunks)
+            {
+                chunks.Add(GenerateChunk(req));
+            }
+        }
+
         public TerrainGenerator()
         {
             noise = new FastNoiseLite();

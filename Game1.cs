@@ -17,7 +17,8 @@ namespace drillGame
         Drill drill;
         Player _player;
         Camera _cam;
-        Vector2 loadedChunks = new Vector2(4, 4); //determents how many chunks should be loaded at once
+        Vector2 loadedChunks = new Vector2(2, 2); //determents how many chunks should be loaded beside your chunk so { 1, 1} would result in 9 chunks being loaded
+        Vector2 _pLastChunk;
         
         public Game1()
         {
@@ -41,12 +42,10 @@ namespace drillGame
             gen = new()
             {
                 treeTile = Content.Load<Texture2D>("treeTile"),
-                waterTile = Content.Load<Texture2D>("watertile")
-                ,
+                waterTile = Content.Load<Texture2D>("watertile"),
                 grassTile = Content.Load<Texture2D>("grass"),
                 sandTile = Content.Load<Texture2D>("sandtile"),
         };
-            gen.Generate(4, 4);
             Window.Title = gen.seed.ToString(); ;
             box = Content.Load<Texture2D>("box");
             //drill = new Drill(1, gen.tiles);
@@ -58,6 +57,8 @@ namespace drillGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+
 
             if (IsActive)
             {
@@ -73,6 +74,11 @@ namespace drillGame
 
                 _player.Update(gameTime,_cam);
                 _cam.Follow(_player.Position);
+                var _pCurrentChunk = _player.GetCurrentChunk();
+
+                if (_pCurrentChunk != _pLastChunk) gen.ReloadChunks(_pCurrentChunk, loadedChunks);
+                _pLastChunk = _pCurrentChunk;
+
             }
 
 
