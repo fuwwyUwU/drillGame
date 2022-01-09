@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using drillGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using FNL;
 using System.Diagnostics;
+using SimplexNoiseCSharp;
 
 namespace TerrainGeneration
 {
@@ -17,8 +17,6 @@ namespace TerrainGeneration
 
        // private int width, height;
         public Texture2D treeTile, grassTile, sandTile, waterTile;
-        float scale = 0.00001f;
-        FastNoiseLite noise;
         public int seed;
 
         List<Vector2> reqchunks = new List<Vector2>();
@@ -65,17 +63,14 @@ namespace TerrainGeneration
 
         public TerrainGenerator()
         {
-            noise = new FastNoiseLite();
             seed = GenerateSeed();
-            noise.SetSeed(seed);
-            noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2S);
         }
 
-        Tile GetTile(float value)
+        Tile GetTile(float value, Vector2 pos)
         {
-            if (value < 0) return new Tile(grassTile);
-            else if (value > 0) return new Tile(sandTile);
-            else if (value == 0) return new Tile(waterTile);
+            if (value <= 0.6f && pos.Y * value < 0.7f) return new Tile(sandTile);
+            else if (pos.Y * value < 8) return new Tile(grassTile);
+            else if (value >= 0.3f && value <= 2f) return new Tile(waterTile);
             else return new Tile(treeTile);
             
         }
@@ -89,8 +84,8 @@ namespace TerrainGeneration
             {
                 for (int y = 0; y < Chunk.height; y++)
                 {
-                    float value = noise.GetNoise((chunk.X * 8 + x) * scale, (chunk.Y * 8 + y) * scale);
-                    _chunk.tiles[x, y] = GetTile(value);
+                    float value = Noise.Generate(((chunk.X * 8 + x) / 100) * seed, (((chunk.Y * 8 + y) / 8 ) * seed) + 1);
+                    _chunk.tiles[x, y] = GetTile(value, new Vector2(chunk.X * 8 + x, chunk.Y * 8 + y));
                     
                 }
             }

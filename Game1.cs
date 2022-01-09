@@ -17,7 +17,7 @@ namespace drillGame
         Drill drill;
         Player _player;
         Camera _cam;
-        Vector2 loadedChunks = new Vector2(2, 2); //determents how many chunks should be loaded beside your chunk so { 1, 1} would result in 9 chunks being loaded
+        Vector2 loadedChunks = new Vector2(2, 0); //determents how many chunks should be loaded beside your chunk so { 1, 1} would result in 9 chunks being loaded
         Vector2 _pLastChunk;
         
         public Game1()
@@ -76,7 +76,7 @@ namespace drillGame
                 _cam.Follow(_player.Position);
                 var _pCurrentChunk = _player.GetCurrentChunk();
 
-                if (_pCurrentChunk != _pLastChunk) gen.ReloadChunks(_pCurrentChunk, loadedChunks);
+                if (_pCurrentChunk != _pLastChunk) gen.ReloadChunks(new Vector2(_pCurrentChunk.X, 0), loadedChunks);
                 _pLastChunk = _pCurrentChunk;
 
             }
