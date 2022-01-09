@@ -12,7 +12,7 @@ namespace drillGame
     {
         public Tile[,] tiles;
         public const int width = 8;
-        public const int height = 8;
+        public const int height = 54;
         public Vector2 position;
 
         public void Draw(SpriteBatch spriteBatch)
