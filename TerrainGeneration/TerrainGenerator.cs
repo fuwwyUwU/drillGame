@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 using SimplexNoiseCSharp;
+using FNL;
 
 namespace TerrainGeneration
 {
@@ -18,6 +19,8 @@ namespace TerrainGeneration
        // private int width, height;
         public Texture2D treeTile, grassTile, sandTile, waterTile;
         public int seed;
+        public float scale = 0.0001f;
+        FastNoiseLite noise;
 
         List<Vector2> reqchunks = new List<Vector2>();
 
@@ -64,6 +67,8 @@ namespace TerrainGeneration
         public TerrainGenerator()
         {
             seed = GenerateSeed();
+            noise = new FastNoiseLite(seed);
+            noise.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
         }
 
         Tile GetTile(float value, Vector2 pos)
@@ -79,12 +84,12 @@ namespace TerrainGeneration
         {
             Chunk _chunk = new Chunk();
             _chunk.position = chunk;
-            _chunk.tiles = new Tile[8, 54];
+            _chunk.tiles = new Tile[Chunk.width, Chunk.height];
             for (float x = 0; x < Chunk.width; x++)
             {
                 for (float y = 0; y < Chunk.height; y++)
                 {
-                    float value = Noise.Generate((x / Chunk.width) * seed, (y / Chunk.height)* seed ) + 1;
+                    float value = noise.GetNoise((chunk.X * 8 + x / scale), (chunk.X * 8 + x / scale) + 1);
                     _chunk.tiles[(int)x, (int)y] = GetTile(value, new Vector2(chunk.X * 8 + x, chunk.Y * 8 + y));
                     
                 }
