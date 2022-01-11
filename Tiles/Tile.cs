@@ -15,11 +15,11 @@ namespace drillGame
         public readonly Texture2D sprite;
         public const int size = 16;
         public readonly bool isBreakable;
+        public Vector2 pos; // i think this need it own position to help calculations
 
-
-        public Tile(Texture2D _sprite)
+        public Tile(Texture2D _sprite, Vector2 position)
         {
-
+            pos = position;
             sprite = _sprite;
             isBreakable = true;
         }
