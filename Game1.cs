@@ -45,7 +45,8 @@ namespace drillGame
                 waterTile = Content.Load<Texture2D>("watertile"),
                 grassTile = Content.Load<Texture2D>("grass"),
                 sandTile = Content.Load<Texture2D>("sandtile"),
-        };
+            };
+            gen.ReloadChunks(Vector2.Zero, loadedChunks);
             Window.Title = gen.seed.ToString(); ;
             box = Content.Load<Texture2D>("box");
             //drill = new Drill(1, gen.tiles);

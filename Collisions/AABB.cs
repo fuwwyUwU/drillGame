@@ -6,179 +6,85 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 
-
+#nullable enable
 namespace drillGame
 {
 
-
-    public struct AABB
+    public class AABB
     {
-        public Vector2 Position;
-        public Vector2 HalfExtents;
+        public Vector2 pos;
+        public Vector2 half;
 
-        public AABB(Vector2 position, Vector2 halfExtents)
+        public AABB(Vector2 _pos, Vector2 _half)
         {
-            Position = position;
-            HalfExtents = halfExtents;
-        }
-    }
-
-    public static class CollisionManager
-    {
-        public struct Hit
-        {
-            public bool valid;
-
-            public Vector2 position;
-            public Vector2 overlap;
-            public Vector2 normal;
-            public float time;
+            pos = _pos;
+            half = _half;
         }
 
-        public struct Sweep
+        public Hit? IntersectPoint(Vector2 point)
         {
-            public Hit hit;
-            public Vector2 position;
-            public float time;
-
-            public static Sweep Invalid { get { Sweep sweep = new Sweep(); sweep.time = float.MaxValue; return sweep; } }
-        }
-
-        public static Sweep TryMoveAABB(AABB aabb, Vector2 velocity)
-        {
-            Vector2 a = aabb.Position - aabb.HalfExtents;
-            Vector2 b = (aabb.Position + velocity) + aabb.HalfExtents;
-
-            AABB range = new AABB(((b - a) / 2) + a, (b - a) / 2);
-
-            //Query for objects in spatial hash. If you don't have a spatial hash yet, just use a list of all AABBs in the world.
-            List<AABB> query = Game1.colliders;
-
-            Sweep nearest = new Sweep();
-            nearest.time = 1;
-            nearest.position = aabb.Position + velocity;
-
-            for (int i = 0; i < query.Count; i++)
-            {
-                AABB other = query[i];
-
-                Sweep sweep = SweepAABBVsAABB(aabb, other, velocity);
-
-                if (sweep.time < nearest.time)
-                    nearest = sweep;
-            }
-
-            return nearest;
-        }
-
-        public static Sweep SweepAABBVsAABB(AABB a, AABB b, Vector2 aVelocity)
-        {
-            Sweep sweep = new Sweep();
-            sweep.time = 1;
-
-            if (Math.Abs(aVelocity.Length()) < float.Epsilon)
-            {
-                sweep.position = a.Position;
-
-                sweep.hit = AABBVsAABB(a, b);
-
-                if (sweep.hit.valid)
-                    sweep.time = 0;
-                else sweep.time = 1;
-
-                return sweep;
-            }
-
-            sweep.hit = AABBVsSegment(b, a.Position, aVelocity, a.HalfExtents.X, a.HalfExtents.Y);
-
-            if (sweep.hit.valid)
-            {
-                float ep = 1e-8f;
-                sweep.time = Math.Clamp(sweep.hit.time - ep, 0, 1);
-                sweep.position.X = a.Position.X + aVelocity.X * sweep.time;
-                sweep.position.Y = a.Position.Y + aVelocity.Y * sweep.time;
-
-                Vector2 direction = Vector2.Normalize(aVelocity);
-
-                sweep.hit.position.X = Math.Clamp(
-                  sweep.hit.position.X + direction.X * a.HalfExtents.X,
-                  b.Position.X - b.HalfExtents.X, b.Position.X + b.Position.X);
-
-                sweep.hit.position.Y = Math.Clamp(
-                  sweep.hit.position.Y + direction.Y * a.HalfExtents.Y,
-                  b.Position.Y - b.HalfExtents.Y, b.Position.Y + b.Position.Y);
-            }
-            else
-            {
-                sweep.position.X = a.Position.X + aVelocity.X;
-                sweep.position.Y = a.Position.Y + aVelocity.Y;
-                sweep.time = 1;
-            }
-            return sweep;
-        }
-
-        public static Hit AABBVsAABB(AABB a, AABB b)
-        {
-            float dx = b.Position.X - a.Position.X;
-            float px = (b.HalfExtents.X + a.HalfExtents.X) - MathF.Abs(dx);
+            var dx = point.X - pos.X;
+            var px = half.X - MathF.Abs(dx);
             if (px <= 0)
-                return new Hit();
+            {
+                return null;
+            }
 
-            float dy = b.Position.Y - a.Position.Y;
-            float py = (b.HalfExtents.Y + a.HalfExtents.Y) - MathF.Abs(dy);
+            var dy = point.Y - pos.Y;
+            var py = half.Y - MathF.Abs(dy);
             if (py <= 0)
-                return new Hit();
+            {
+                return null;
+            }
 
-            Hit hit = new Hit();
-            hit.valid = true;
-
+            var hit = new Hit(this);
             if (px < py)
             {
-                int sx = MathF.Sign(dx);
-                hit.overlap.X = px * sx;
+                var sx = MathF.Sign(dx);
+                hit.delta.X = px * sx;
                 hit.normal.X = sx;
-                hit.position.X = a.Position.X + (a.HalfExtents.X * sx);
-                hit.position.Y = b.Position.Y;
+                hit.pos.X = pos.X + (half.X * sx);
+                hit.pos.Y = point.Y;
             }
             else
             {
-                int sy = MathF.Sign(dy);
-                hit.overlap.Y = py * sy;
+                var sy = MathF.Sign(dy);
+                hit.delta.Y = py * sy;
                 hit.normal.Y = sy;
-                hit.position.X = b.Position.X;
-                hit.position.Y = a.Position.Y + (a.HalfExtents.Y * sy);
+                hit.pos.X = point.X;
+                hit.pos.Y = pos.Y + (half.Y * sy);
             }
             return hit;
         }
 
-        public static Hit AABBVsSegment(AABB aabb, Vector2 point, Vector2 direction, float paddingX = 0, float paddingY = 0)
-        {
-            float scaleX = 1.0f / direction.X;
-            float scaleY = 1.0f / direction.Y;
-            float signX = MathF.Sign(scaleX);
-            float signY = MathF.Sign(scaleY);
-            float nearTimeX = (aabb.Position.X - signX * (aabb.HalfExtents.X + paddingX) - point.X) * scaleX;
-            float nearTimeY = (aabb.Position.Y - signY * (aabb.HalfExtents.Y + paddingY) - point.Y) * scaleY;
-            float farTimeX = (aabb.Position.X + signX * (aabb.HalfExtents.X + paddingX) - point.X) * scaleX;
-            float farTimeY = (aabb.Position.Y + signY * (aabb.HalfExtents.Y + paddingY) - point.Y) * scaleY;
 
-            if (float.IsNaN(nearTimeX))
-                nearTimeX = scaleX;
-            if (float.IsNaN(nearTimeY))
-                nearTimeY = scaleY;
+
+        public Hit? IntersectSegment(Vector2 pos, Vector2 delta, float paddingX = 0, float paddingY = 0)
+        {
+            var scaleX = 1.0f / delta.X;
+            var scaleY = 1.0f / delta.Y;
+            var signX = MathF.Sign(scaleX);
+            var signY = MathF.Sign(scaleY);
+            var nearTimeX = (pos.X - signX * (half.X + paddingX) - pos.X) * scaleX;
+            var nearTimeY = (pos.Y - signY * (half.Y + paddingY) - pos.Y) * scaleY;
+            var farTimeX = (pos.X + signX * (half.X + paddingX) - pos.X) * scaleX;
+            var farTimeY = (pos.Y + signY * (half.Y + paddingY) - pos.Y) * scaleY;
 
             if (nearTimeX > farTimeY || nearTimeY > farTimeX)
-                return new Hit();
+            {
+                return null;
+            }
 
-            float nearTime = nearTimeX > nearTimeY ? nearTimeX : nearTimeY;
-            float farTime = farTimeX < farTimeY ? farTimeX : farTimeY;
+            var nearTime = nearTimeX > nearTimeY ? nearTimeX : nearTimeY;
+            var farTime = farTimeX < farTimeY ? farTimeX : farTimeY;
 
-            if ((nearTime >= 1 || nearTime < 0) || farTime <= 0)
-                return new Hit();
+            if (nearTime >= 1 || farTime <= 0)
+            {
+                return null;
+            }
 
-            Hit hit = new Hit();
-            hit.valid = true;
-            hit.time = Math.Clamp(nearTime, 0, 1);
+            var hit = new Hit(this);
+            hit.time = MathHelper.Clamp(nearTime, 0, 1);
             if (nearTimeX > nearTimeY)
             {
                 hit.normal.X = -signX;
@@ -189,12 +95,117 @@ namespace drillGame
                 hit.normal.X = 0;
                 hit.normal.Y = -signY;
             }
-
-            hit.overlap.X = (1.0f - hit.time) * -direction.X;
-            hit.overlap.Y = (1.0f - hit.time) * -direction.Y;
-            hit.position.X = point.X + direction.X * (hit.time + float.Epsilon);
-            hit.position.Y = point.Y + direction.Y * (hit.time + float.Epsilon);
+            hit.delta.X = (1.0f - hit.time) * -delta.X;
+            hit.delta.Y = (1.0f - hit.time) * -delta.Y;
+            hit.pos.X = pos.X + delta.X * hit.time;
+            hit.pos.Y = pos.Y + delta.Y * hit.time;
             return hit;
+        }
+
+        public Hit? intersectAABB(AABB box)
+        {
+            var dx = box.pos.X - pos.X;
+            var px = (box.half.X + half.X) - MathF.Abs(dx);
+            if (px <= 0)
+            {
+                return null;
+            }
+
+            var dy = box.pos.Y - pos.Y;
+            var py = (box.half.Y + half.Y) - MathF.Abs(dy);
+            if (py <= 0)
+            {
+                return null;
+            }
+
+            var hit = new Hit(this);
+            if (px < py)
+            {
+                var sx = MathF.Sign(dx);
+                hit.delta.X = px * sx;
+                hit.normal.X = sx;
+                hit.pos.X = pos.X + (half.X * sx);
+                hit.pos.Y = box.pos.Y;
+            }
+            else
+            {
+                var sy = MathF.Sign(dy);
+                hit.delta.Y = py * sy;
+                hit.normal.Y = sy;
+                hit.pos.X = box.pos.X;
+                hit.pos.Y = pos.Y + (half.Y * sy);
+            }
+            return hit;
+        }
+
+        public Sweep sweep(AABB box, Vector2 delta)
+        {
+            Sweep sweep = new Sweep();
+            
+            if (delta.X == 0 && delta.Y == 0)
+            {
+                sweep.pos.X = box.pos.X;
+                sweep.pos.Y = box.pos.Y;
+                sweep.hit = this.intersectAABB(box);
+                sweep.time = sweep.hit != null ? (sweep.hit.time = 0) : 1;
+                return sweep;
+            }
+
+            sweep.hit = IntersectSegment(box.pos, delta, box.half.X, box.half.Y);
+            if (sweep.hit != null)
+            {
+                sweep.time = MathHelper.Clamp(sweep.hit.time - float.Epsilon, 0, 1);
+                sweep.pos.X = box.pos.X + delta.X * sweep.time;
+                sweep.pos.Y = box.pos.Y + delta.Y * sweep.time;
+                var direction = new Vector2(delta.X, delta.Y);
+                direction.Normalize();
+                sweep.hit.pos.X = MathHelper.Clamp(
+                  sweep.hit.pos.X + direction.X * box.half.X,
+                  pos.X - half.X, pos.X + half.X);
+                sweep.hit.pos.Y = MathHelper.Clamp(
+                  sweep.hit.pos.Y + direction.Y * box.half.Y,
+                  pos.Y - half.Y, pos.Y + half.Y);
+            }
+            else
+            {
+                sweep.pos.X = box.pos.X + delta.X;
+                sweep.pos.Y = box.pos.Y + delta.Y;
+                sweep.time = 1;
+            }
+            return sweep;
+        }
+    }
+    
+    
+    public class Hit 
+    {
+        public AABB collider;
+        public Vector2 pos;
+        public Vector2 delta;
+        public Vector2 normal;
+        public float time;
+
+        public Hit(AABB _collider)
+        {
+            collider = _collider;
+            pos = new Vector2();
+            delta = new Vector2();
+            normal = new Vector2();
+            time = 0;
+        }
+    }
+
+    public class Sweep
+    {
+        public Hit? hit;
+        public Vector2 pos;
+        public float time;
+
+        public Sweep()
+        {
+            hit = null;
+            pos = new Vector2();
+            time = 1;
         }
     }
 }
