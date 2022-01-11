@@ -73,9 +73,9 @@ namespace TerrainGeneration
 
         Tile GetTile(float value, Vector2 pos)
         {
-            if (pos.Y * value < 20) return new Tile(grassTile);
-            else if (value <= 0.6f && pos.Y * value < 0.7f) return new Tile(sandTile);
-            else if (value >= 0.3f && value <= 2f) return new Tile(waterTile);
+            if (pos.Y * value < 4) return new Tile(grassTile);
+            else if (value <= 1.5f && pos.Y * value < 8f) return new Tile(sandTile);
+            else if (value > 1.5f && value <= 2f) return new Tile(waterTile);
             else return new Tile(treeTile);
             
         }
@@ -89,7 +89,7 @@ namespace TerrainGeneration
             {
                 for (float y = 0; y < Chunk.height; y++)
                 {
-                    float value = noise.GetNoise((chunk.X * 8 + x / scale), (chunk.X * 8 + x / scale) + 1);
+                    float value = noise.GetNoise(chunk.X * 8 + x / scale, chunk.X * 8 + x / scale) +1 ;
                     _chunk.tiles[(int)x, (int)y] = GetTile(value, new Vector2(chunk.X * 8 + x, chunk.Y * 8 + y));
                 }
             }
