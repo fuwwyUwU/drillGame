@@ -13,6 +13,7 @@ namespace drillGame
         public Tile[,] tiles;
         public const int width = 8;
         public const int height = 54;
+        public static Vector2 size { get { return new Vector2(width, height); } }
         public Vector2 position;
 
         public void Draw(SpriteBatch spriteBatch)
@@ -21,9 +22,14 @@ namespace drillGame
             {
                 for (int y = 0; y < height; y++)
                 {
-                    tiles[x, y].Draw(spriteBatch, position * 8 + new Vector2(x, y));
+                    tiles[x, y].Draw(spriteBatch, position * size + new Vector2(x, y));
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return position.ToString();
         }
 
     }

@@ -16,7 +16,8 @@ namespace drillGame
         public static Keys Interact;
         public static Keys ZoomPlus;
         public static Keys ZoomMinus;
-        public static void SetKeys(Keys up, Keys down, Keys left, Keys right, Keys interact, Keys zoomPlus, Keys zoomMinus) //this is better maybe :D
+        public static Keys Debug;
+        public static void SetKeys(Keys up, Keys down, Keys left, Keys right, Keys interact, Keys zoomPlus, Keys zoomMinus, Keys debug) //this is better maybe :D
         {
             Up = up;
             Down = down;
@@ -25,6 +26,7 @@ namespace drillGame
             Interact = interact;
             ZoomPlus = zoomPlus;
             ZoomMinus = zoomMinus;
+            Debug = debug;
         }
     }
 }

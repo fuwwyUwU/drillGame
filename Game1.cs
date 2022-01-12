@@ -50,7 +50,7 @@ namespace drillGame
             Window.Title = gen.seed.ToString(); ;
             box = Content.Load<Texture2D>("box");
             //drill = new Drill(1, gen.tiles);
-            _player = new Player(box, Vector2.Zero/*, drill*/);
+            _player = new Player(box, new Vector2(0, 1000)/*, drill*/);
          //   _player = new(drill,);
         }
 

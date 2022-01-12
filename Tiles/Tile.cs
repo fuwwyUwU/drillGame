@@ -17,17 +17,20 @@ namespace drillGame
         public readonly bool isBreakable;
         public Vector2 pos; // i think this need it own position to help calculations
 
-        public Tile(Texture2D _sprite, Vector2 position)
+        public Tile(Texture2D _sprite, Vector2 position, AABB collider)
         {
             pos = position;
             sprite = _sprite;
             isBreakable = true;
+            Game1.colliders.Add(collider);
         }
 
-        public Tile(Texture2D _sprite, bool _isBreakable)
+        public Tile(Texture2D _sprite, Vector2 position, bool _isBreakable, AABB collider)
         {
+            pos = position;
             sprite = _sprite;
             isBreakable = _isBreakable;
+            Game1.colliders.Add(collider);
         }
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {

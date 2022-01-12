@@ -138,7 +138,7 @@ namespace drillGame
             return hit;
         }
 
-        public Sweep sweep(AABB box, Vector2 delta)
+        public Sweep SweepAABB(AABB box, Vector2 delta)
         {
             Sweep sweep = new Sweep();
             

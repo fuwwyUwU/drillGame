@@ -20,13 +20,15 @@ namespace drillGame
         Vector2 velocity = Vector2.Zero;
         float speed = 4;
         KeyboardState ks;
+        bool debugging;
+        bool debugPressed;
         
 
         public Player(Texture2D spritesheet, Vector2 _position/*, Drill _drill*/ ) : base(spritesheet, 1, 4, 0) // check spriteatlas
         {
-            InputWrapper.SetKeys(Keys.W, Keys.S, Keys.A, Keys.D, Keys.X, Keys.OemPlus, Keys.OemMinus); //Made inputWrapper static class because i can
+            InputWrapper.SetKeys(Keys.W, Keys.S, Keys.A, Keys.D, Keys.X, Keys.OemPlus, Keys.OemMinus, Keys.F11); //Made inputWrapper static class because i can
             //drill = _drill;
-            aabb = new AABB(Position, new Vector2(16, 32));
+            aabb = new AABB(Position, new Vector2(4, 8));
             Position = _position;
             Width = 8;
             Height = 16;
@@ -60,6 +62,16 @@ namespace drillGame
                 //drill.Dig(gameTime, new Vector2(Position.X, Position.Y + Origin.Y)); // please fix dig its broken again
             }
 
+            if (ks.IsKeyDown(InputWrapper.Debug))
+            {
+                if (debugPressed) return;
+                debugging = debugging == false ? true : false;
+            }
+            else
+            {
+                debugPressed = false;
+            }
+
 
             //var sweep = CollisionManager.TryMoveAABB(aabb, velocity);
             //Debug.WriteLine($"{aabb.Position} {aabb.HalfExtents}");
@@ -71,7 +83,27 @@ namespace drillGame
             //}
             //else Position = sweep.position;
             //aabb.Position = Position;
+            Sweep sweep = null;
+            foreach (var collider in Game1.colliders)
+            {
+                var checkSweep = aabb.SweepAABB(collider, velocity);
+                if (checkSweep.hit != null)
+                {
+                    sweep = checkSweep;
+                    break;
+                }
+            }
+
+            if (sweep != null && !debugging)
+            {
+                Position = sweep.hit.delta;
+            }
+            else
+            {
+                Position += velocity;
+            }
             Position += velocity;
+            aabb.pos = Position;
             velocity = Vector2.Zero;
             camZoom(camera);
         }
@@ -83,9 +115,9 @@ namespace drillGame
 
         public Vector2 GetCurrentChunk()
         {
-            Vector2 currentChunk = Position * 0.0078125f;
+            //16 is the with and height of a tile
+            Vector2 currentChunk = Position / (Chunk.size * 16);
             return Vector2.Round(currentChunk);
-
         }
     }
 }

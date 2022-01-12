@@ -60,7 +60,7 @@ namespace TerrainGeneration
             //add the new chunks 
             foreach (var req in reqchunks)
             {
-                chunks.Add(GenerateChunk(req *8));
+                chunks.Add(GenerateChunk(req));
             }
         }
 
@@ -73,10 +73,10 @@ namespace TerrainGeneration
 
         Tile GetTile(float value, Vector2 pos)
         {
-            if (pos.Y * value < 8) return new Tile(grassTile,pos); //Check tile for info
+            if (pos.Y * value < 8) return new Tile(grassTile, pos, new AABB(pos, Vector2.One * 8)); //Check tile for info
             //else if (value <= 1.5f) return new Tile(sandTile);
            // else if (value > 1.5f && value <= 2f) return new Tile(waterTile);
-            else return new Tile(treeTile,pos);
+            else return new Tile(treeTile, pos, new AABB(pos, Vector2.One * 8));
             
         }
 
@@ -89,13 +89,13 @@ namespace TerrainGeneration
             {
                 for (float y = 0; y < Chunk.height; y++)
                 {
-                    float value = noise.GetNoise(chunk.X * 8 + x / scale, chunk.X * 8 + x / scale) +1 ;
-                    _chunk.tiles[(int)x, (int)y] = GetTile(value, new Vector2(chunk.X * 8 + x, chunk.Y * 8 + y));
+                    float value = noise.GetNoise(chunk.X * Chunk.width + x / scale, chunk.X * Chunk.height + x / scale) +1 ;
+                    _chunk.tiles[(int)x, (int)y] = GetTile(value, chunk * Chunk.size + new Vector2(x, y));
                 }
             }
             foreach(var tile in _chunk.tiles)
             {
-                tile.pos += chunk * 8;
+                tile.pos += chunk * Chunk.size;
             }
             return _chunk;
         }
@@ -107,7 +107,7 @@ namespace TerrainGeneration
             {
                 for (int y = 0; y < height; y++)
                 {
-                    chunks.Add(GenerateChunk(new Vector2(x, y)*8));
+                    chunks.Add(GenerateChunk(new Vector2(x, y)));
                 }
             }
         }
