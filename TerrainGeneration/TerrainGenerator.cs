@@ -73,10 +73,10 @@ namespace TerrainGeneration
 
         Tile GetTile(float value, Vector2 pos)
         {
-            if (pos.Y * value < 8) return new Tile(grassTile, pos, new AABB(pos, Vector2.One * 8)); //Check tile for info
+            if (pos.Y * value < 8) return new Tile(grassTile, pos); //Check tile for info
             //else if (value <= 1.5f) return new Tile(sandTile);
            // else if (value > 1.5f && value <= 2f) return new Tile(waterTile);
-            else return new Tile(treeTile, pos, new AABB(pos, Vector2.One * 8));
+            else return new Tile(treeTile, pos);
             
         }
 

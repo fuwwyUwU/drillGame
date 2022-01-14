@@ -83,6 +83,7 @@ namespace drillGame
             //}
             //else Position = sweep.position;
             //aabb.Position = Position;
+            aabb.pos = Position;
             Sweep sweep = null;
             foreach (var collider in Game1.colliders)
             {
@@ -103,7 +104,6 @@ namespace drillGame
                 Position += velocity;
             }
             Position += velocity;
-            aabb.pos = Position;
             velocity = Vector2.Zero;
             camZoom(camera);
         }
